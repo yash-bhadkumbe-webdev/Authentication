@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt')
-const userSchema = require('../Model/Model')
- const registerUser =async (req,res)=>{
+import {User} from "../Model/Model.js";
+
+export const registerUser =async (req,res)=>{
 
     try {
         const {username,email,password}=req.body;
@@ -10,7 +10,7 @@ const userSchema = require('../Model/Model')
                 message:'all fields are required'
             })
         }
-        const existingUser = await userSchema.findOne({email})
+        const existingUser = await User.findOne({email})
         if (existingUser){
             return res.status(400).json({
                 success:false,
@@ -18,11 +18,15 @@ const userSchema = require('../Model/Model')
             })
         }
         const hashedPassword=await bcrypt.hash(password,10)
-        const newUser = await userSchema.create({
+        const newUser = await User.create({
             username,
             email,
             password:hashedPassword
         })
+        const token = jwt.sign({id:newUser._id},process.env.SECRET_KEY,{expiresIn: "10m"})
+        verifyEmail(token,email)
+        newUser.token=token
+        await newUser.save()
         return res.status(201).json({
             success:true,
             message:"user created",
@@ -35,4 +39,3 @@ const userSchema = require('../Model/Model')
         })
     }
 }
-module.exports={registerUser}

@@ -1,13 +1,16 @@
-const express = require('express')
+import express from 'express'
+import ConnectDB from "./config/ConnectDB.js";
+import Route from "./Routes/Route.js";
 const app = express()
-const ConnectDB = require('./config/ConnectDB')
-const userRoute = require('./Routes/Route')
+
+
 ConnectDB()
 app.use(express.json())
+app.get('/',(req,res)=>{
+    res.send("hello")
+})
+app.use('/user',Route)
 
-app.use('/user',userRoute)
-
-
-app.listen(4000,()=>{
-    console.log('server started')
+app.listen(5000,()=>{
+    console.log("server started")
 })

@@ -11,7 +11,7 @@ const verifyEmail = async (token,email)=>{
         from:"yash.bhadkumbe.sde@gmail.com",
         to:email,
         subject:"Email verification",
-        html:"just testing"
+        text:"just testing"
     }
     transporter.sendMail(mailConfiguration,function (error,info){
         if (error){
@@ -21,3 +21,4 @@ const verifyEmail = async (token,email)=>{
         console.log(info)
     })
 }
+module.exports= {verifyEmail}

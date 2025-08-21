@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose"
 const ConnectDB = async ()=>{
     try {
         await mongoose.connect('mongodb://localhost:27017/Auth')
@@ -7,4 +7,4 @@ const ConnectDB = async ()=>{
         console.log('connection failed')
     }
 }
-module.exports=ConnectDB;
+export default ConnectDB;
